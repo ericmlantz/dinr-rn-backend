@@ -20,7 +20,7 @@ app.use(express.json())
 
  //------------Sign Up---------------------
  //User Post
- app.post('/signup/user', async (req, res) => {
+ app.post('/user/signup', async (req, res) => {
   const client = new MongoClient(uri)
   const {email, password} = req.body
   const generatedUserId = uuidv4()
@@ -59,7 +59,7 @@ app.use(express.json())
  })
 
 //Restaurant Post
- app.post('/signup/restaurant', async (req, res) => {
+ app.post('/restaurant/signup', async (req, res) => {
   const client = new MongoClient(uri)
   const {email, password} = req.body
   const generatedRestaurantId = uuidv4()
@@ -97,6 +97,67 @@ app.use(express.json())
   }
  })
 
+ //Login User
+ app.post('/user/login', async (req, res) => {
+  const client = new MongoClient(uri)
+  const {email, password} = req.body
+  
+  try {
+    await client.connect()
+    const database = client.db('app-data')
+    const users = database.collection('users')
+
+
+    const user = await users.findOne({email})
+
+    const correctPassword = await bcrypt.compare(password, user.hashed_password)
+
+    if(user && correctPassword) {
+      const token = jwt.sign(user, email, 
+        {expiresIn: 60 * 24
+      })
+      res.status(201).json({token, userId: user.user_id})
+    }
+    res.status(400).send('Invalid Credentials)')
+  } catch (err) {
+  console.log(err)
+  } finally {
+    await client.close()
+  }
+})
+
+//Login Restaurant
+app.post('/restaurant/login', async (req, res) => {
+  const client = new MongoClient(uri)
+  const {email, password} = req.body
+  
+  try {
+    await client.connect()
+    const database = client.db('app-data')
+    const restaurants = database.collection('restaurants')
+
+
+    const restaurant = await restaurants.findOne({email})
+
+    const correctPassword = await bcrypt.compare(password, restaurant.hashed_password)
+
+    if(restaurant && correctPassword) {
+      const token = jwt.sign(restaurant, email, 
+        {expiresIn: 60 * 24
+      })
+      res.status(201).json({token, restId: restaurant.rest_id})
+    }
+    res.status(400).send('Invalid Credentials)')
+  } catch (err) {
+  console.log(err)
+  } finally {
+    await client.close()
+  }
+})
+
+
+
+//Get One User
 app.get('/user', async (req, res) => {
   const client = new MongoClient(uri)
   const userId = req.query.userId
@@ -114,8 +175,27 @@ app.get('/user', async (req, res) => {
   }
 })
 
+//get One Restaurant
+app.get('/rest', async (req, res) => {
+  const client = new MongoClient(uri)
+  const restId = req.query.restId
+
+  try {
+    await client.connect()
+    const database = client.db('app-data')
+    const restaurants = database.collection('restaurants')
+
+    const query = {rest_id: restId}
+    const restaurant = await restaurants.findOne(query)
+    res.send(restaurant)
+  } finally {
+    await client.close()
+  }
+})
+
+
 //Get All Users
-app.get('/users', async (req, res) => {
+app.get('/allusers', async (req, res) => {
   const client = new MongoClient(uri)
 
   try {
@@ -131,7 +211,7 @@ app.get('/users', async (req, res) => {
 })
 
 //Get All Restaurants
-app.get('/rests', async (req, res) => {
+app.get('/allrests', async (req, res) => {
   const client = new MongoClient(uri)
 
   try {
