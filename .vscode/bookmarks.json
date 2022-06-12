@@ -1,0 +1,39 @@
+{
+	"files": [
+		{
+			"path": "index.js",
+			"bookmarks": [
+				{
+					"line": 22,
+					"column": 1,
+					"label": "User Post"
+				},
+				{
+					"line": 61,
+					"column": 3,
+					"label": "User Post"
+				},
+				{
+					"line": 117,
+					"column": 5,
+					"label": "Rest Update"
+				},
+				{
+					"line": 132,
+					"column": 0,
+					"label": "Get All Restaurants"
+				},
+				{
+					"line": 148,
+					"column": 8,
+					"label": "Update User"
+				},
+				{
+					"line": 176,
+					"column": 0,
+					"label": "Update Restaurant"
+				}
+			]
+		}
+	]
+}
