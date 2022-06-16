@@ -80,7 +80,7 @@ app.use(express.json())
     const sanitizedEmail = email.toLowerCase()
 
     const data = {
-      restaurant_id: generatedRestaurantId,
+      rest_id: generatedRestaurantId,
       email: sanitizedEmail,
       hashed_password: hashedPassword
     }
@@ -89,7 +89,7 @@ app.use(express.json())
     const token = jwt.sign(insertedRestaurant, sanitizedEmail, {expiresIn: 60 * 24,
     })
 
-    res.status(201).json({token, restaurantId: generatedRestaurantId})
+    res.status(201).json({token, restId: generatedRestaurantId})
   } catch (err) {
       console.log(err)
   } finally {
@@ -155,8 +155,6 @@ app.post('/restaurant/login', async (req, res) => {
   }
 })
 
-
-
 //Get One User
 app.get('/user', async (req, res) => {
   const client = new MongoClient(uri)
@@ -192,7 +190,93 @@ app.get('/rest', async (req, res) => {
     await client.close()
   }
 })
+//Add Rest Matches
+app.put('/addrestmatch', async (req, res) => {
+  const client = new MongoClient(uri)
+  const { userId, matchedRestaurantId } = req.body
 
+  try {
+    await client.connect()
+    const database = client.db('app-data')
+    const users = database.collection('users')
+
+    const query = { user_id: userId }
+    const updateDocument = {
+      $push: { matches: {rest_id: matchedRestaurantId }},
+    }
+    const user = await users.updateOne(query, updateDocument)
+    res.send(user)
+  } finally {
+    await client.close()
+  }
+})
+//Get Matched Restaurants
+app.get('/rests', async (req, res) => {
+  const client = new MongoClient(uri)
+  const restIds = JSON.parse(req.query.restIds)
+  try {
+      await client.connect()
+      const database = client.db('app-data')
+      const restaurants = database.collection('restaurants')
+
+      const pipeline =
+          [
+              {
+                  '$match': {
+                      'rest_id': {
+                          '$in': restIds
+                      }
+                  }
+              }
+          ]
+
+      const foundRestaurants = await restaurants.aggregate(pipeline).toArray()
+
+      res.send(foundRestaurants)
+
+  } finally {
+      await client.close()
+  }
+})
+
+
+//Get Zipcode Users
+app.get('/zipcodeusers', async (req, res) => {
+  const client = new MongoClient(uri)
+  const zipcode = req.query.zipcode
+  
+  try {
+    await client.connect()
+    const database = client.db('app-data')
+    const users = database.collection('users')
+    const query = {zipcode: {$eq: zipcode}}
+    const foundUsers = await users.find(query).toArray()
+
+    res.send(foundUsers)
+  } finally {
+    await client.close()
+  }
+})
+
+//Get Zipcode Restaurants
+app.get('/zipcoderests', async (req, res) => {
+  const client = new MongoClient(uri)
+  const zipcode = req.query.zipcode
+
+  console.log(zipcode)
+
+  try {
+    await client.connect()
+    const database = client.db('app-data')
+    const restaurants = database.collection('restaurants')
+    const query = {zipcode: {$eq: zipcode}}
+    const foundRestaurants = await restaurants.find(query).toArray()
+    
+    res.send(foundRestaurants)
+  } finally {
+    await client.close()
+  }
+})
 
 //Get All Users
 app.get('/allusers', async (req, res) => {
@@ -277,7 +361,7 @@ app.put('/rest', async (req, res) => {
       rest_apt: restaurantFormData.rest_apt,
       rest_city: restaurantFormData.rest_city,
       rest_state: restaurantFormData.rest_state,
-      rest_zipcode: restaurantFormData.rest_zipcode,
+      zipcode: restaurantFormData.zipcode,
       matches: restaurantFormData.matches
       },
     }
@@ -288,16 +372,44 @@ app.put('/rest', async (req, res) => {
   }
 })
 
+app.put('/addusermatch', async (req, res) => {
+  const client = new MongoClient(uri)
+  const { userId, matchedUserId } = req.body
 
- //-------
- app.get('/onboarding', (req, res) => {
-  res.json('/onboarding')
- })
+  try {
+    await client.connect()
+    const database = client.db('app-data')
+    const users = database.collection('users')
 
- app.get('/dashboard', (req, res) => {
-  res.json('/dashboard')
- })
+    const query = { user_id, userId }
+    const updateDocument = {
+      $push: { matches: {user_id: matchedUserId }},
 
+    }
+    const user = await users.updateOne(query, updateDocument)
+    res.send(user)
+  } finally {
+    await client.close()
+  }
+})
 
+app.get('/messages', async () => {
+  const client = new MongoClient(uri)
+  const { userId, correspondingRestId} = req.query
+  console.log(userId, correspondingRestId, 'correspondingRestId')
+  
+  try {
+    await client.connect()
+    const database = client.db("app-data")
+    const messages = database.collection('messages')
 
+    const query = {
+      from_userId: userId, to_restId: correspondingRestId
+    }
+    const foundMessages = await messages.find(query).toArray()
+    res.send(foundMessages)
+  } finally {
+    await client.close()
+  }
+})
  app.listen(PORT, () => console.log("Server running on PORT " + PORT))
