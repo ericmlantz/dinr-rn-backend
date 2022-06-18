@@ -1,26 +1,26 @@
- const PORT = 8000
- const express = require('express')
- const {MongoClient} = require('mongodb')
- const { v4:uuidv4 } = require('uuid')
- const bcrypt = require('bcrypt')
- const jwt = require('jsonwebtoken')
- const cors = require('cors')
- const { restart } = require('nodemon')
+const PORT = 8000
+const express = require('express')
+const {MongoClient} = require('mongodb')
+const {v4: uuidv4} = require('uuid')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const cors = require('cors')
+const {restart} = require('nodemon')
 
- const uri = 'mongodb+srv://dinruser:admin@cluster0.8uknu.mongodb.net/?retryWrites=true&w=majority'
+const uri = 'mongodb+srv://dinruser:admin@cluster0.8uknu.mongodb.net/?retryWrites=true&w=majority'
 
- const app = express()
- app.use(cors())
+const app = express()
+app.use(cors())
 app.use(express.json())
 
 
- app.get('/', (req, res) => {
+app.get('/', (req, res) => {
   res.json('Hello to my app')
- })
+})
 
- //------------Sign Up---------------------
- //User Post
- app.post('/user/signup', async (req, res) => {
+//------------Sign Up---------------------
+//User Post
+app.post('/user/signup', async (req, res) => {
   const client = new MongoClient(uri)
   const {email, password} = req.body
   const generatedUserId = uuidv4()
@@ -47,19 +47,20 @@ app.use(express.json())
     }
     const insertedUser = await users.insertOne(data)
 
-    const token = jwt.sign(insertedUser, sanitizedEmail, {expiresIn: 60 * 24,
+    const token = jwt.sign(insertedUser, sanitizedEmail, {
+      expiresIn: 60 * 24,
     })
 
     res.status(201).json({token, userId: generatedUserId})
   } catch (err) {
-      console.log(err)
+    console.log(err)
   } finally {
-      await client.close()
+    await client.close()
   }
- })
+})
 
 //Restaurant Post
- app.post('/restaurant/signup', async (req, res) => {
+app.post('/restaurant/signup', async (req, res) => {
   const client = new MongoClient(uri)
   const {email, password} = req.body
   const generatedRestaurantId = uuidv4()
@@ -86,22 +87,23 @@ app.use(express.json())
     }
     const insertedRestaurant = await restaurants.insertOne(data)
 
-    const token = jwt.sign(insertedRestaurant, sanitizedEmail, {expiresIn: 60 * 24,
+    const token = jwt.sign(insertedRestaurant, sanitizedEmail, {
+      expiresIn: 60 * 24,
     })
 
     res.status(201).json({token, restId: generatedRestaurantId})
   } catch (err) {
-      console.log(err)
+    console.log(err)
   } finally {
-      await client.close()
+    await client.close()
   }
- })
+})
 
- //Login User
- app.post('/user/login', async (req, res) => {
+//Login User
+app.post('/user/login', async (req, res) => {
   const client = new MongoClient(uri)
   const {email, password} = req.body
-  
+
   try {
     await client.connect()
     const database = client.db('app-data')
@@ -112,15 +114,16 @@ app.use(express.json())
 
     const correctPassword = await bcrypt.compare(password, user.hashed_password)
 
-    if(user && correctPassword) {
-      const token = jwt.sign(user, email, 
-        {expiresIn: 60 * 24
-      })
+    if (user && correctPassword) {
+      const token = jwt.sign(user, email,
+        {
+          expiresIn: 60 * 24
+        })
       res.status(201).json({token, userId: user.user_id})
     }
     res.status(400).send('Invalid Credentials)')
   } catch (err) {
-  console.log(err)
+    console.log(err)
   } finally {
     await client.close()
   }
@@ -130,7 +133,7 @@ app.use(express.json())
 app.post('/restaurant/login', async (req, res) => {
   const client = new MongoClient(uri)
   const {email, password} = req.body
-  
+
   try {
     await client.connect()
     const database = client.db('app-data')
@@ -141,15 +144,16 @@ app.post('/restaurant/login', async (req, res) => {
 
     const correctPassword = await bcrypt.compare(password, restaurant.hashed_password)
 
-    if(restaurant && correctPassword) {
-      const token = jwt.sign(restaurant, email, 
-        {expiresIn: 60 * 24
-      })
+    if (restaurant && correctPassword) {
+      const token = jwt.sign(restaurant, email,
+        {
+          expiresIn: 60 * 24
+        })
       res.status(201).json({token, restId: restaurant.rest_id})
     }
     res.status(400).send('Invalid Credentials)')
   } catch (err) {
-  console.log(err)
+    console.log(err)
   } finally {
     await client.close()
   }
@@ -193,16 +197,16 @@ app.get('/rest', async (req, res) => {
 //Add Rest Matches
 app.put('/addrestmatch', async (req, res) => {
   const client = new MongoClient(uri)
-  const { userId, matchedRestaurantId } = req.body
+  const {userId, matchedRestaurantId} = req.body
 
   try {
     await client.connect()
     const database = client.db('app-data')
     const users = database.collection('users')
 
-    const query = { user_id: userId }
+    const query = {user_id: userId}
     const updateDocument = {
-      $push: { matches: {rest_id: matchedRestaurantId }},
+      $push: {matches: {rest_id: matchedRestaurantId}},
     }
     const user = await users.updateOne(query, updateDocument)
     res.send(user)
@@ -215,27 +219,27 @@ app.get('/rests', async (req, res) => {
   const client = new MongoClient(uri)
   const restIds = JSON.parse(req.query.restIds)
   try {
-      await client.connect()
-      const database = client.db('app-data')
-      const restaurants = database.collection('restaurants')
+    await client.connect()
+    const database = client.db('app-data')
+    const restaurants = database.collection('restaurants')
 
-      const pipeline =
-          [
-              {
-                  '$match': {
-                      'rest_id': {
-                          '$in': restIds
-                      }
-                  }
-              }
-          ]
+    const pipeline =
+      [
+        {
+          '$match': {
+            'rest_id': {
+              '$in': restIds
+            }
+          }
+        }
+      ]
 
-      const foundRestaurants = await restaurants.aggregate(pipeline).toArray()
+    const foundRestaurants = await restaurants.aggregate(pipeline).toArray()
 
-      res.send(foundRestaurants)
+    res.send(foundRestaurants)
 
   } finally {
-      await client.close()
+    await client.close()
   }
 })
 
@@ -244,7 +248,7 @@ app.get('/rests', async (req, res) => {
 app.get('/zipcodeusers', async (req, res) => {
   const client = new MongoClient(uri)
   const zipcode = req.query.zipcode
-  
+
   try {
     await client.connect()
     const database = client.db('app-data')
@@ -271,7 +275,7 @@ app.get('/zipcoderests', async (req, res) => {
     const restaurants = database.collection('restaurants')
     const query = {zipcode: {$eq: zipcode}}
     const foundRestaurants = await restaurants.find(query).toArray()
-    
+
     res.send(foundRestaurants)
   } finally {
     await client.close()
@@ -286,7 +290,7 @@ app.get('/allusers', async (req, res) => {
     await client.connect()
     const database = client.db('app-data')
     const users = database.collection('users')
-    
+
     const returnedUsers = await users.find().toArray()
     res.send(returnedUsers)
   } finally {
@@ -322,13 +326,13 @@ app.put('/user', async (req, res) => {
     const query = {user_id: personFormData.user_id}
     const updateDocument = {
       $set: {
-      first_name: personFormData.first_name,
-      dob_month: personFormData.dob_month,
-      dob_day: personFormData.dob_day,
-      dob_year: personFormData.dob_year,
-      profile_photo: personFormData.profile_photo,
-      zipcode: personFormData.zipcode,
-      matches: personFormData.matches
+        first_name: personFormData.first_name,
+        dob_month: personFormData.dob_month,
+        dob_day: personFormData.dob_day,
+        dob_year: personFormData.dob_year,
+        profile_photo: personFormData.profile_photo,
+        zipcode: personFormData.zipcode,
+        matches: personFormData.matches
       },
     }
     const insertedUser = await users.updateOne(query, updateDocument)
@@ -350,19 +354,19 @@ app.put('/rest', async (req, res) => {
     const query = {rest_id: restaurantFormData.rest_id}
     const updateDocument = {
       $set: {
-      rest_name: restaurantFormData.rest_name,
-      rest_logo: restaurantFormData.rest_logo,
-      rest_photo1: restaurantFormData.rest_photo1,
-      rest_description: restaurantFormData.rest_description,
-      rest_url: restaurantFormData.rest_url,
-      rest_phone: restaurantFormData.rest_phone,
-      food_type: restaurantFormData.type_of_food,
-      rest_street: restaurantFormData.rest_street,
-      rest_apt: restaurantFormData.rest_apt,
-      rest_city: restaurantFormData.rest_city,
-      rest_state: restaurantFormData.rest_state,
-      zipcode: restaurantFormData.zipcode,
-      matches: restaurantFormData.matches
+        rest_name: restaurantFormData.rest_name,
+        rest_logo: restaurantFormData.rest_logo,
+        rest_photo1: restaurantFormData.rest_photo1,
+        rest_description: restaurantFormData.rest_description,
+        rest_url: restaurantFormData.rest_url,
+        rest_phone: restaurantFormData.rest_phone,
+        food_type: restaurantFormData.type_of_food,
+        rest_street: restaurantFormData.rest_street,
+        rest_apt: restaurantFormData.rest_apt,
+        rest_city: restaurantFormData.rest_city,
+        rest_state: restaurantFormData.rest_state,
+        zipcode: restaurantFormData.zipcode,
+        matches: restaurantFormData.matches
       },
     }
     const insertedRestaurant = await restaurants.updateOne(query, updateDocument)
@@ -374,16 +378,16 @@ app.put('/rest', async (req, res) => {
 
 app.put('/addusermatch', async (req, res) => {
   const client = new MongoClient(uri)
-  const { userId, matchedUserId } = req.body
+  const {userId, matchedUserId} = req.body
 
   try {
     await client.connect()
     const database = client.db('app-data')
     const users = database.collection('users')
 
-    const query = { user_id, userId }
+    const query = {user_id, userId}
     const updateDocument = {
-      $push: { matches: {user_id: matchedUserId }},
+      $push: {matches: {user_id: matchedUserId}},
 
     }
     const user = await users.updateOne(query, updateDocument)
@@ -393,11 +397,11 @@ app.put('/addusermatch', async (req, res) => {
   }
 })
 
-app.get('/messages', async () => {
+app.get('/messages', async (req, res) => {
   const client = new MongoClient(uri)
-  const { userId, correspondingRestId} = req.query
+  const {userId, correspondingRestId} = req.query
   console.log(userId, correspondingRestId, 'correspondingRestId')
-  
+
   try {
     await client.connect()
     const database = client.db("app-data")
@@ -412,4 +416,19 @@ app.get('/messages', async () => {
     await client.close()
   }
 })
- app.listen(PORT, () => console.log("Server running on PORT " + PORT))
+
+app.post('/message', async (req, res) => {
+  const client = new MongoClient(uri)
+  const message = req.body.message
+
+  try {
+    await client.connect()
+    const database = client.db("app-data")
+    const messages = database.collection('messages')
+    const insertedMessage = await messages.insertOne(message)
+    res.send(insertedMessage)
+  } finally {
+    await client.close()
+  }
+})
+app.listen(PORT, () => console.log("Server running on PORT " + PORT))
