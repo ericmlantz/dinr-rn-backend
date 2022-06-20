@@ -7,12 +7,15 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const {restart} = require('nodemon')
 
+
+
+
 const uri = 'mongodb+srv://dinruser:admin@cluster0.8uknu.mongodb.net/?retryWrites=true&w=majority'
 
 const app = express()
 app.use(cors())
 app.use(express.json())
-
+app.use(express.static(`${__dirname}/client/build`))
 
 app.get('/', (req, res) => {
   res.json('Hello to my app')
@@ -431,4 +434,9 @@ app.post('/message', async (req, res) => {
     await client.close()
   }
 })
+
+app.get('/*', (req, res) => {
+  res.sendFile(`${__dirname}/client/build/index.html`)
+ })
+
 app.listen(PORT, () => console.log("Server running on PORT " + PORT))
