@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install && npm run build"
-  },
+    "backend": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+    },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ericmlantz/backend.git"
