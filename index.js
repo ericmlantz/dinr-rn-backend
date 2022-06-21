@@ -8,20 +8,18 @@ const cors = require('cors')
 const {restart} = require('nodemon')
 
 
-
-
 const uri = 'mongodb+srv://dinruser:admin@cluster0.8uknu.mongodb.net/?retryWrites=true&w=majority'
 
+app.use(express.static(`${__dirname}/frontend/build`))
 const app = express()
 app.use(cors())
 app.use(express.json())
-app.use(express.static(`${__dirname}/client/build`))
 
 app.get('/', (req, res) => {
   res.json('Hello to my app')
 })
 
-//------------Sign Up---------------------
+//------------Sign Up----------
 //User Post
 app.post('/user/signup', async (req, res) => {
   const client = new MongoClient(uri)
@@ -436,7 +434,7 @@ app.post('/message', async (req, res) => {
 })
 
 app.get('/*', (req, res) => {
-  res.sendFile(`${__dirname}/client/build/index.html`)
+  res.sendFile(`${__dirname}/frontend/build/index.html`)
  })
 
 app.listen(PORT, () => console.log("Server running on PORT " + PORT))
