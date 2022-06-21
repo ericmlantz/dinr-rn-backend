@@ -12,6 +12,7 @@ const uri = process.env.uri || 'mongodb+srv://dinruser:matthew12@cluster0.8uknu.
 const app = express()
 app.use(cors())
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
   res.json('Hello to my app')
