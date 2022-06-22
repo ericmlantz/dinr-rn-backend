@@ -1,4 +1,4 @@
-const PORT = process.env.uri || 8000
+const PORT = process.env.PORT || 8000
 const express = require('express')
 const {MongoClient} = require('mongodb')
 const {v4: uuidv4} = require('uuid')
@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const {restart} = require('nodemon')
 
-const uri = process.env.uri || 'mongodb+srv://dinruser:matthew12@cluster0.8uknu.mongodb.net/?retryWrites=true&w=majority'
+const uri = 'mongodb+srv://dinruser:matthew12@cluster0.8uknu.mongodb.net/?retryWrites=true&w=majority'
 
 const app = express()
 app.use(cors())
