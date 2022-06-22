@@ -12,7 +12,6 @@ const uri = 'mongodb+srv://dinruser:matthew12@cluster0.8uknu.mongodb.net/?retryW
 const app = express()
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
   res.json('Hello to my app')
