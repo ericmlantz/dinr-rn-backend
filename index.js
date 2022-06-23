@@ -8,7 +8,7 @@ const cors = require('cors')
 const {restart} = require('nodemon')
 const logger = require('morgan')
 
-const uri = 'mongodb+srv://dinruser:matthew12@cluster0.8uknu.mongodb.net/app-data?retryWrites=true&w=majority'
+const uri = 'mongodb+srv://dinruser:matthew12@cluster0.8uknu.mongodb.net/?retryWrites=true&w=majority'
 
 const app = express()
 app.use(cors())
@@ -124,6 +124,7 @@ app.post('/user/login', async (req, res) => {
       res.status(201).json({token, userId: user.user_id})
     }
     res.status(400).send('Invalid Credentials)')
+    return
   } catch (err) {
     console.log(err)
   } finally {
