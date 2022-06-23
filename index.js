@@ -124,7 +124,6 @@ app.post('/user/login', async (req, res) => {
       res.status(201).json({token, userId: user.user_id})
     }
     res.status(400).send('Invalid Credentials)')
-    return
   } catch (err) {
     console.log(err)
   } finally {
