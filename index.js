@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const {restart} = require('nodemon')
 
-const uri = process.env.MONGODB_URI
+const uri = 'mongodb+srv://dinruser:matthew12@cluster0.8uknu.mongodb.net/app-data?retryWrites=true&w=majority'
 
 const app = express()
 app.use(cors())
