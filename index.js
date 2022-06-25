@@ -138,9 +138,9 @@ app.post('/user/login', async (req, res) => {
         {
           expiresIn: 60 * 24
         })
-      res.status(201).send({token, userId: user.user_id})
+      return res.status(201).send({token, userId: user.user_id})
     }
-    // res.status(400).send('Invalid Credentials')
+    res.status(400).send('Invalid Credentials')
   } catch (err) {
     console.log(err)
   } finally {
