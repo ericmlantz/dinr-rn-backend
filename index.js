@@ -4,9 +4,6 @@ const app = express();
 const jwt = require('jsonwebtoken')
 const {v4: uuid4} = require('uuid')
 const { MongoClient } = require("mongodb");
-const bcrypt = require('bcrypt')
-const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS)
-require('dotenv').config()
 
 const uri = process.env.MONGODB_URI
 
@@ -37,7 +34,7 @@ app.post('/user/signup', async (req, res) => {
   const {email, password} = req.body
   const generatedUserId = uuidv4()
   console.log(generatedUserId)
-  const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
+  const hashedPassword = await bcrypt.hash(password, 10)
 
   try {
     await client.connect()

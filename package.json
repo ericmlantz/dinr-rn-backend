@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Week of March 28th, 2022 *** [LinkedIn](https://www.linkedin.com/in/eric-lantz/) | [Github](https://github.com/ericmlantz) *** ### **Table of Contents** 1. [Description](#description) 2. [Technology](#technology) 3. [Getting Started](#started) 4. [Screenshots](#screenshots) 5. [Future Updates](#updates) 6. [Credits](#updates) ***",
   "main": "index.js",
-  "engines": { 
-    "node": "16.15.1" 
- },
   "scripts": {
     "start": "node index.js",
     "start:dev": "nodemon -r dotenv/config index.js",
@@ -22,7 +19,6 @@
   },
   "homepage": "https://github.com/ericmlantz/backend#readme",
   "dependencies": {
-    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
