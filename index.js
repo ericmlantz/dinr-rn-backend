@@ -1,5 +1,6 @@
 const PORT = process.env.PORT;
 const express = require("express");
+const cors = require('cors')
 const app = express();
 const jwt = require('jsonwebtoken')
 const {v4: uuid4} = require('uuid')
