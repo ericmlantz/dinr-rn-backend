@@ -121,14 +121,13 @@ app.post('/restaurant/signup', async (req, res) => {
 
 //Login User
 app.post('/user/login', async (req, res) => {
-  const client = new MongoClient(uri, { useUnifiedTopology: true })
+  const client = new MongoClient(uri)
   const {email, password} = req.body
 
   try {
     await client.connect()
     const database = client.db('app-data')
     const users = database.collection('users')
-
 
     const user = await users.findOne({email})
 
