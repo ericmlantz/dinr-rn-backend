@@ -11,12 +11,10 @@ const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS)
 const uri = process.env.MONGODB_URI
 
 app.use(cors())
+app.use(express.json());
+app.use(express.urlencoded());
 
-app.use(express.json())
-app.use(express.urlencoded({
-  extended: true
-}));
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 // const express = require('express')
 // const {MongoClient} = require('mongodb')
