@@ -1,3 +1,4 @@
+const PORT = process.env.PORT;
 const express = require("express");
 const app = express();
 
@@ -10,7 +11,7 @@ app.use(express.static("public"));
 
 // const express = require('express')
 // const {MongoClient} = require('mongodb')
-// const {v4: uuidv4} = require('uuid')
+// const {v4: uuid4} = require('uuid')
 // const bcrypt = require('bcrypt')
 // const jwt = require('jsonwebtoken')
 // const cors = require('cors')
