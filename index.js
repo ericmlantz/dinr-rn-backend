@@ -1,5 +1,6 @@
 const PORT = process.env.PORT;
 const express = require("express");
+const bcrypt = require('bcrypt')
 const app = express();
 
 const { MongoClient } = require("mongodb");
