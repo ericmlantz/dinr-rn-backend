@@ -40,7 +40,6 @@ app.get('/', (req, res) => {
 //User Post
 app.post('/user/signup', async (req, res) => {
   const client = new MongoClient(uri)
-  console.log(req)
   const {email, password} = req.body
   console.log('email',email)
   console.log('password', password)
@@ -59,7 +58,7 @@ app.post('/user/signup', async (req, res) => {
     if (existingUser) {
       return res.status(409).send('User already exists. Please login')
     }
-    // const sanitizedEmail = email.toLowerCase()
+    const sanitizedEmail = email.toLowerCase()
 
     const data = {
       user_id: generatedUserId,
@@ -68,11 +67,14 @@ app.post('/user/signup', async (req, res) => {
     }
     const insertedUser = await users.insertOne(data)
 
+    res.send('success')
+    console.log(data)
+    
     const token = jwt.sign(insertedUser, sanitizedEmail, {
       expiresIn: 60 * 24,
     })
 
-    res.status(201).json({token, userId: generatedUserId})
+    res.status(201).send({token, userId: generatedUserId})
   } catch (err) {
     console.log(err)
   } finally {
