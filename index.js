@@ -1,4 +1,3 @@
-const PORT = 8000
 const express = require('express')
 const {MongoClient} = require('mongodb')
 const {v4: uuidv4} = require('uuid')
@@ -7,11 +6,12 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const {restart} = require('nodemon')
 
-const uri = 'mongodb+srv://dinruser:admin@cluster0.8uknu.mongodb.net/?retryWrites=true&w=majority'
+const uri = process.env.MONGODB_URI
 
 const app = express()
 app.use(cors())
-app.use(express.json())
+app.use(express.static("public"));
+
 
 
 app.get('/', (req, res) => {
@@ -431,4 +431,5 @@ app.post('/message', async (req, res) => {
     await client.close()
   }
 })
-app.listen(PORT, () => console.log("Server running on PORT " + PORT))
+
+app.listen(process.env.PORT || 8000, () => console.log("Server running on PORT " + PORT))
