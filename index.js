@@ -41,10 +41,11 @@ app.get('/', (req, res) => {
 app.post('/user/signup', async (req, res) => {
   const client = new MongoClient(uri,{ useUnifiedTopology: true })
   const {email, password} = req.body
+  console.log('email',email)
+  console.log('password', password)
   const generatedUserId = uuidv4()
   console.log(generatedUserId)
-  const hashedPassword = password
-  // await bcrypt.hash(password, SALT_ROUNDS)
+  const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
 
   try {
     await client.connect()
@@ -57,7 +58,7 @@ app.post('/user/signup', async (req, res) => {
     if (existingUser) {
       return res.status(409).send('User already exists. Please login')
     }
-    const sanitizedEmail = email.toLowerCase()
+    // const sanitizedEmail = email.toLowerCase()
 
     const data = {
       user_id: generatedUserId,
