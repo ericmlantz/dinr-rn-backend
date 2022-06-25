@@ -67,9 +67,6 @@ app.post('/user/signup', async (req, res) => {
     }
     const insertedUser = await users.insertOne(data)
 
-    res.send('success')
-    console.log(data)
-    
     const token = jwt.sign(insertedUser, sanitizedEmail, {
       expiresIn: 60 * 24,
     })
