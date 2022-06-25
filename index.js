@@ -7,6 +7,7 @@ const {v4: uuidv4} = require('uuid')
 const { MongoClient } = require("mongodb");
 const bcrypt = require('bcrypt')
 
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS)
 const uri = process.env.MONGODB_URI
 
 app.use(cors())
@@ -38,7 +39,7 @@ app.post('/user/signup', async (req, res) => {
   const {email, password} = req.body
   const generatedUserId = uuidv4()
   console.log(generatedUserId)
-  const hashedPassword = await bcrypt.hash(password, 10)
+  const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
 
   try {
     await client.connect()
