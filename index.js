@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt')
 
 const uri = process.env.MONGODB_URI
 
+app.use(cors())
 app.use(express.json())
 app.use(express.static("public"));
 
@@ -23,7 +24,7 @@ app.use(express.static("public"));
 
 
 // const app = express()
-// app.use(cors())
+
 
 app.get('/', (req, res) => {
   res.json('Hello to my app')
