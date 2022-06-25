@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
 //------------Sign Up----------
 //User Post
 app.post('/user/signup', async (req, res) => {
-  const client = new MongoClient(uri,{ useUnifiedTopology: true })
+  const client = new MongoClient(uri)
   console.log(req.body)
   const {email, password} = req.body
   console.log('email',email)
