@@ -12,8 +12,10 @@ const uri = process.env.MONGODB_URI
 const app = express();
 
 app.use(cors())
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.json())
+app.use(express.urlencoded({
+  extended: true
+}));
 app.use(express.static("public"));
 
 // const express = require('express')
@@ -38,7 +40,6 @@ app.get('/', (req, res) => {
 //User Post
 app.post('/user/signup', async (req, res) => {
   const client = new MongoClient(uri,{ useUnifiedTopology: true })
-  console.log(req.body)
   const {email, password} = req.config.body
   console.log('email',email)
   console.log('password', password)
@@ -57,7 +58,7 @@ app.post('/user/signup', async (req, res) => {
     if (existingUser) {
       return res.status(409).send('User already exists. Please login')
     }
-    const sanitizedEmail = email.toLowerCase()
+    // const sanitizedEmail = email.toLowerCase()
 
     const data = {
       user_id: generatedUserId,
