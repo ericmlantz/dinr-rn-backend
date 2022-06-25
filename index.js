@@ -140,7 +140,7 @@ app.post('/user/login', async (req, res) => {
         })
       res.status(201).send({token, userId: user.user_id})
     }
-    res.status(400).send('Invalid Credentials)')
+    res.status(400).send('Invalid Credentials')
   } catch (err) {
     console.log(err)
   } finally {
@@ -150,7 +150,7 @@ app.post('/user/login', async (req, res) => {
 
 //Login Restaurant
 app.post('/restaurant/login', async (req, res) => {
-  const client = new MongoClient(uri, { useUnifiedTopology: true })
+  const client = new MongoClient(uri)
   const {email, password} = req.body
 
   try {
