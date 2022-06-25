@@ -1,7 +1,6 @@
 const PORT = process.env.PORT || 8000;
 const express = require("express");
 const cors = require('cors')
-const app = express();
 const jwt = require('jsonwebtoken')
 const {v4: uuidv4} = require('uuid')
 const { MongoClient } = require("mongodb");
@@ -10,11 +9,12 @@ const bcrypt = require('bcrypt')
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS)
 const uri = process.env.MONGODB_URI
 
+const app = express();
+
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded());
-
-// app.use(express.static("public"));
+app.use(express.static("public"));
 
 // const express = require('express')
 // const {MongoClient} = require('mongodb')
@@ -38,6 +38,7 @@ app.get('/', (req, res) => {
 //User Post
 app.post('/user/signup', async (req, res) => {
   const client = new MongoClient(uri,{ useUnifiedTopology: true })
+  console.log(req.body)
   const {email, password} = req.body
   console.log('email',email)
   console.log('password', password)
@@ -56,7 +57,7 @@ app.post('/user/signup', async (req, res) => {
     if (existingUser) {
       return res.status(409).send('User already exists. Please login')
     }
-    // const sanitizedEmail = email.toLowerCase()
+    const sanitizedEmail = email.toLowerCase()
 
     const data = {
       user_id: generatedUserId,
