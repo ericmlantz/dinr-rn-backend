@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require('cors')
 const app = express();
 const jwt = require('jsonwebtoken')
-const {v4: uuid4} = require('uuid')
+const {v4: uuidv4} = require('uuid')
 const { MongoClient } = require("mongodb");
 const bcrypt = require('bcrypt')
 
