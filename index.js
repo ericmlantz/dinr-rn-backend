@@ -22,12 +22,11 @@ app.use(express.static("public"));
 // const app = express()
 // app.use(cors())
 
-
 app.get('/', (req, res) => {
   res.json('Hello to my app')
 })
 
-//------------Sign Up---------------------
+//------------Sign Up----------
 //User Post
 app.post('/user/signup', async (req, res) => {
   const client = new MongoClient(uri,{ useUnifiedTopology: true })
