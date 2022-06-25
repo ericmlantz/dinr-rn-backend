@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const {restart} = require('nodemon')
+require('dotenv').config()
 
 const uri = process.env.MONGODB_URI
 
