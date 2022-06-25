@@ -1,18 +1,26 @@
-const express = require('express')
-const {MongoClient} = require('mongodb')
-const {v4: uuidv4} = require('uuid')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const cors = require('cors')
-const {restart} = require('nodemon')
-require('dotenv').config()
+const express = require("express");
+const app = express();
+
+const { MongoClient } = require("mongodb");
 
 const uri = process.env.MONGODB_URI
 
-const app = express()
-app.use(cors())
 app.use(express.static("public"));
 
+
+// const express = require('express')
+// const {MongoClient} = require('mongodb')
+// const {v4: uuidv4} = require('uuid')
+// const bcrypt = require('bcrypt')
+// const jwt = require('jsonwebtoken')
+// const cors = require('cors')
+// const {restart} = require('nodemon')
+// require('dotenv').config()
+
+
+
+// const app = express()
+// app.use(cors())
 
 
 app.get('/', (req, res) => {
@@ -22,7 +30,7 @@ app.get('/', (req, res) => {
 //------------Sign Up---------------------
 //User Post
 app.post('/user/signup', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri,{ useUnifiedTopology: true })
   const {email, password} = req.body
   const generatedUserId = uuidv4()
   console.log(generatedUserId)
@@ -62,7 +70,7 @@ app.post('/user/signup', async (req, res) => {
 
 //Restaurant Post
 app.post('/restaurant/signup', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri,{ useUnifiedTopology: true })
   const {email, password} = req.body
   const generatedRestaurantId = uuidv4()
   console.log(generatedRestaurantId)
@@ -102,7 +110,7 @@ app.post('/restaurant/signup', async (req, res) => {
 
 //Login User
 app.post('/user/login', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const {email, password} = req.body
 
   try {
@@ -132,7 +140,7 @@ app.post('/user/login', async (req, res) => {
 
 //Login Restaurant
 app.post('/restaurant/login', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const {email, password} = req.body
 
   try {
@@ -162,7 +170,7 @@ app.post('/restaurant/login', async (req, res) => {
 
 //Get One User
 app.get('/user', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const userId = req.query.userId
 
   try {
@@ -180,7 +188,7 @@ app.get('/user', async (req, res) => {
 
 //get One Restaurant
 app.get('/rest', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const restId = req.query.restId
 
   try {
@@ -197,7 +205,7 @@ app.get('/rest', async (req, res) => {
 })
 //Add Rest Matches
 app.put('/addrestmatch', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const {userId, matchedRestaurantId} = req.body
 
   try {
@@ -217,7 +225,7 @@ app.put('/addrestmatch', async (req, res) => {
 })
 //Get Matched Restaurants
 app.get('/rests', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const restIds = JSON.parse(req.query.restIds)
   try {
     await client.connect()
@@ -247,7 +255,7 @@ app.get('/rests', async (req, res) => {
 
 //Get Zipcode Users
 app.get('/zipcodeusers', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const zipcode = req.query.zipcode
 
   try {
@@ -265,7 +273,7 @@ app.get('/zipcodeusers', async (req, res) => {
 
 //Get Zipcode Restaurants
 app.get('/zipcoderests', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const zipcode = req.query.zipcode
 
   console.log(zipcode)
@@ -285,7 +293,7 @@ app.get('/zipcoderests', async (req, res) => {
 
 //Get All Users
 app.get('/allusers', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
 
   try {
     await client.connect()
@@ -301,7 +309,7 @@ app.get('/allusers', async (req, res) => {
 
 //Get All Restaurants
 app.get('/allrests', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
 
   try {
     await client.connect()
@@ -317,7 +325,7 @@ app.get('/allrests', async (req, res) => {
 
 //Update Users
 app.put('/user', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const personFormData = req.body.personFormData
 
   try {
@@ -345,7 +353,7 @@ app.put('/user', async (req, res) => {
 
 //Update Restaurants
 app.put('/rest', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const restaurantFormData = req.body.restaurantFormData
 
   try {
@@ -378,7 +386,7 @@ app.put('/rest', async (req, res) => {
 })
 
 app.put('/addusermatch', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const {userId, matchedUserId} = req.body
 
   try {
@@ -399,7 +407,7 @@ app.put('/addusermatch', async (req, res) => {
 })
 
 app.get('/messages', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const {userId, correspondingRestId} = req.query
   console.log(userId, correspondingRestId, 'correspondingRestId')
 
@@ -419,7 +427,7 @@ app.get('/messages', async (req, res) => {
 })
 
 app.post('/message', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const message = req.body.message
 
   try {
