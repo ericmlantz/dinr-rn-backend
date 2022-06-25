@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt')
 
 const uri = process.env.MONGODB_URI
 
+app.use(express.json())
 app.use(express.static("public"));
 
 // const express = require('express')
