@@ -7,7 +7,7 @@ const { MongoClient } = require("mongodb");
 const uri = process.env.MONGODB_URI
 
 app.use(express.static("public"));
-
+require('dotenv').config()
 
 // const express = require('express')
 // const {MongoClient} = require('mongodb')
