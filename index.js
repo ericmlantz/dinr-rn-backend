@@ -1,16 +1,11 @@
 const PORT = process.env.PORT;
 const express = require("express");
-const {v4: uuid4} = require('uuid')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-
 const app = express();
 
 const { MongoClient } = require("mongodb");
 
 const uri = process.env.MONGODB_URI
 
-app.use(express.json())
 app.use(express.static("public"));
 
 
