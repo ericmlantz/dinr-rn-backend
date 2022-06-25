@@ -6,8 +6,6 @@ const { MongoClient } = require("mongodb");
 
 const uri = process.env.MONGODB_URI
 
-app.use(cors())
-app.use(express.json())
 app.use(express.static("public"));
 
 
