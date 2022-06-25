@@ -43,7 +43,8 @@ app.post('/user/signup', async (req, res) => {
   const {email, password} = req.body
   const generatedUserId = uuidv4()
   console.log(generatedUserId)
-  const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
+  const hashedPassword = password
+  // await bcrypt.hash(password, SALT_ROUNDS)
 
   try {
     await client.connect()
