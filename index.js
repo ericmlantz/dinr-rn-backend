@@ -40,7 +40,8 @@ app.get('/', (req, res) => {
 //User Post
 app.post('/user/signup', async (req, res) => {
   const client = new MongoClient(uri,{ useUnifiedTopology: true })
-  const {email, password} = req.config.body
+  console.log(req.body)
+  const {email, password} = req.body
   console.log('email',email)
   console.log('password', password)
   const generatedUserId = uuidv4()
