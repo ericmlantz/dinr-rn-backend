@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 app.post('/user/signup', async (req, res) => {
   const client = new MongoClient(uri)
   console.log(req)
-  const {email, password} = req.payload
+  const {email, password} = req.body
   console.log('email',email)
   console.log('password', password)
   const generatedUserId = uuidv4()
