@@ -111,7 +111,7 @@ app.post('/restaurant/signup', async (req, res) => {
       expiresIn: 60 * 24,
     })
 
-    res.status(201).json({token, restId: generatedRestaurantId})
+    res.status(201).send({token, restId: generatedRestaurantId})
   } catch (err) {
     console.log(err)
   } finally {
@@ -139,7 +139,7 @@ app.post('/user/login', async (req, res) => {
         {
           expiresIn: 60 * 24
         })
-      res.status(201).json({token, userId: user.user_id})
+      res.status(201).send({token, userId: user.user_id})
     }
     res.status(400).send('Invalid Credentials)')
   } catch (err) {
@@ -169,7 +169,7 @@ app.post('/restaurant/login', async (req, res) => {
         {
           expiresIn: 60 * 24
         })
-      res.status(201).json({token, restId: restaurant.rest_id})
+      res.status(201).send({token, restId: restaurant.rest_id})
     }
     res.status(400).send('Invalid Credentials)')
   } catch (err) {
