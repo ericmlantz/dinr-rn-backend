@@ -4,6 +4,7 @@ const app = express();
 const jwt = require('jsonwebtoken')
 const {v4: uuid4} = require('uuid')
 const { MongoClient } = require("mongodb");
+const bcrypt = require('bcrypt')
 
 const uri = process.env.MONGODB_URI
 
