@@ -48,11 +48,14 @@ https://user-images.githubusercontent.com/77892536/174488472-5e323df6-95c1-4858-
 ***
 <a id="updates"></a>
 ### ***Future Updates***
+- [ ] Get matches by current location instead of by zipcode which is currently the case. 
+- [x] ~~Have name of your match show up at the top of your chat with them.~~
 - [ ] Let restaurants send birthday rewards/offers based on birthday added on profile creation. 
 - [ ] Only show bars/clubs to users that are over 21 based on birthday in profile.
 - [ ] Ability to crop images on upload to match needed size.
 - [x] ~~ER Diagram and Component Hierarchy Diagram Created~~ 
 - [x] ~~Created Development Trello~~
+
 
 ***
 
