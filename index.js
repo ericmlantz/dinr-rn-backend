@@ -180,7 +180,7 @@ app.post('/restaurant/login', async (req, res) => {
 
 //Get One User
 app.get('/user', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const userId = req.query.userId
 
   try {
@@ -417,7 +417,7 @@ app.put('/addusermatch', async (req, res) => {
 })
 
 app.get('/messages', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const {userId, correspondingRestId} = req.query
   console.log(userId, correspondingRestId, 'correspondingRestId')
 
@@ -437,7 +437,7 @@ app.get('/messages', async (req, res) => {
 })
 
 app.post('/message', async (req, res) => {
-  const client = new MongoClient(uri)
+  const client = new MongoClient(uri, { useUnifiedTopology: true })
   const message = req.body.message
 
   try {
