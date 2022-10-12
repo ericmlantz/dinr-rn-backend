@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "dinr-rn-backend",
   "version": "1.0.0",
-  "description": "Week of March 28th, 2022 *** [LinkedIn](https://www.linkedin.com/in/eric-lantz/) | [Github](https://github.com/ericmlantz) *** ### **Table of Contents** 1. [Description](#description) 2. [Technology](#technology) 3. [Getting Started](#started) 4. [Screenshots](#screenshots) 5. [Future Updates](#updates) 6. [Credits](#updates) ***",
+  "description": "Dinr with React Native for mobile",
   "main": "index.js",
   "engines": {
     "node": "17.5.0"
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ericmlantz/backend.git"
+    "url": "git+https://github.com/ericmlantz/dinr-rn-backend.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ericmlantz/backend/issues"
+    "url": "https://github.com/ericmlantz/dinr-rn-backend/issues"
   },
-  "homepage": "https://github.com/ericmlantz/backend#readme",
+  "homepage": "https://github.com/ericmlantz/dinr-rn-backend#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
