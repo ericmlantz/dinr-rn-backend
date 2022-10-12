@@ -7,7 +7,8 @@
     "node": "17.5.0"
   },
   "scripts": {
-    "start": "node index.js",
+    
+    "start:backend": "nodemon index.js",
     "start:dev": "nodemon -r dotenv/config index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
